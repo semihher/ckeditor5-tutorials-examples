@@ -24,10 +24,18 @@ export default class AbbreviationUI extends Plugin {
 
 				// Change the model to insert the abbreviation.
 				editor.model.change( writer => {
-					editor.model.insertContent( 
+					const range = editor.model.insertContent( 
 						// Create a text node with the abbreviation attribute.
 						writer.createText( abbr, { abbreviation: title } ) 
 					);
+
+					// By default the end position stickiness is 'toPrevious'. 
+					// We change it so that the format isn't kept when writing more text next to the abbreviation.
+					range.end.stickiness = 'toNone'
+
+					// Now stickiness is 'toNone', but it doesn't work as expected. 
+					// The format is being kept when you continue writing next to the abbreviation.
+					console.log(range) 
 				} );
 			} );
 
